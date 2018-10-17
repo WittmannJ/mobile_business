@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">BytePluto</string>
+    <string name="dashboard_Text">Das ist ein Toast</string>
+    <string name="help">Hilfe</string>
 </resources>
