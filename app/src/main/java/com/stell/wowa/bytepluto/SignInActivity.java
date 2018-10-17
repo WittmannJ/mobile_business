@@ -1,5 +1,6 @@
 package com.stell.wowa.bytepluto;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -48,6 +49,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void doCreateAccount() {
+        Intent intent = new Intent(getApplication(),
+                CreateAccountActivity.class);
+        startActivity(intent);
     }
 
     private void doResetPassword() {
