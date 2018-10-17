@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
+        inflater.inflate(R.menu.main_menu, menu);
         return true;
     }
 
@@ -41,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.mainMenuTest:
                 Log.d(TAG, "Test was pressed");
+                return true;
+
+            case R.id.idWriteTime:
+                Log.d(TAG, "WriteTime was pressed");
                 return true;
 
             case R.id.mainMenuManageAccount:
