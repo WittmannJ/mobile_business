@@ -54,6 +54,7 @@ public class ManageAccountActivity extends AppCompatActivity implements View.OnC
     }
 
     private void doSignOut() {
+
     }
 
     private void doDeleteAccount() {

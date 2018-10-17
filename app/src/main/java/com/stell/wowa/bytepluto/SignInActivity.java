@@ -58,5 +58,10 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void doSignIn() {
+
+        Intent intent = new Intent(getApplication(), MainActivity.class);
+        intent.putExtra("message", "hi");
+        startActivityForResult(intent, 1);
+
     }
 }

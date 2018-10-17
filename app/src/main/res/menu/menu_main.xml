@@ -7,12 +7,12 @@
         android:id="@+id/mainMenuPost"
         android:icon="?android:attr/actionModeShareDrawable"
         android:title="Post"
-        app:showAsAction="always"
+
         />
 
     <item
         android:id="@+id/mainMenuManageAccount"
-        android:title="Post"
+        android:title="Manage Account"
         />
 
 
