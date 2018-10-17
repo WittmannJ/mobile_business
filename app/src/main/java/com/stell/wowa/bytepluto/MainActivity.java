@@ -8,14 +8,38 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
+
+
 
     private static String TAG = "MainActivity";
+    private static boolean currentUser = false;
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+
+        if (!currentUser ) {
+            Log.d(TAG, "User not authenticated! ");
+            Intent intent = new Intent(getApplication(),
+                    SignInActivity.class);
+            startActivity(intent);
+
+        } else {
+            Log.d(TAG, "User authenticated.");
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+
+
     }
 
     @Override
@@ -49,4 +73,6 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 }
