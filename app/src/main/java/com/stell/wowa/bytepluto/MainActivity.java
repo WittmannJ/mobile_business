@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.mainMenuHelp:
-                Log.d(TAG, "Post was pressed");
+                Log.d(TAG, "Help was pressed");
                 return true;
 
             case R.id.mainMenuTest:
