@@ -15,27 +15,40 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.stell.wowa.bytepluto.model.Post;
 import com.stell.wowa.bytepluto.test.PostTestData;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
+
+    private static final String TEST_USERNAME = "Hans Huber";
+    private static final String TEST_MAIL = "hans.huber@gmail.com";
+    private static final String TEST_PASSWORD = "123456";
+    private static final String TEST_NEW_DISPLAY_NAME = "Sepp Maier";
 
     List<Post> mPostList = PostTestData.createTestData();
-
     ListView mListView;
 
     private static String TAG = "MainActivity";
     private static String currentUser = null;
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onStart() {
 
         super.onStart();
 
-        if (currentUser == null ) {
+        if (currentUser == null) {
             Log.d(TAG, "User not authenticated! ");
             Intent intent = new Intent(getApplication(),
                     SignInActivity.class);
@@ -63,7 +76,7 @@ public class MainActivity extends AppCompatActivity{
         ) {
             @NonNull
             @Override
-            public View getView(int position, View convertView, ViewGroup parent){
+            public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
 
                 TextView text1, text2;
@@ -84,6 +97,8 @@ public class MainActivity extends AppCompatActivity{
 
         mListView = (ListView) findViewById(R.id.listViewMessages);
         mListView.setAdapter(mAdapter);
+
+        mAuth = FirebaseAuth.getInstance();
 
 
 
@@ -123,8 +138,42 @@ public class MainActivity extends AppCompatActivity{
                 intent = new Intent(getApplication(),
                         ManageAccountActivity.class);
                 startActivity(intent);
+                return true;
 
+            case R.id.createTestuser:
+                createTestUser(TEST_MAIL, TEST_PASSWORD);
+                return true;
 
+            case R.id.deleteTestuser:
+                deleteTestUser();
+                return true;
+
+            case R.id.testAuthStatus:
+                testAuthStatus();
+                return true;
+
+            case R.id.signInTestuser:
+                signInTestuser(TEST_MAIL, TEST_PASSWORD);
+                return true;
+
+            case R.id.signOutTestuser:
+                signOutTestuser();
+                return true;
+
+            case R.id.setDisplayName:
+                setDisplayName(TEST_NEW_DISPLAY_NAME);
+                return true;
+
+            case R.id.sendResetPasswordMail:
+                sendResetPasswordMail(TEST_MAIL);
+                return true;
+
+            case R.id.sendActivationMail:
+                sendMailVerification();
+                return true;
+
+            case R.id.idSignInWithGoogle:
+                signInWithGoogle();
                 return true;
 
             default:
@@ -132,5 +181,165 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+    private void signOutTestuser() {
+
+            FirebaseUser user = mAuth.getCurrentUser();
+            if (user == null) {
+                Toast.makeText(getApplicationContext(), "No user signed in.",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+            FirebaseAuth.getInstance().signOut();
+            Toast.makeText(MainActivity.this, "You are signed out.",
+                    Toast.LENGTH_SHORT).show();
+
+    }
+
+    private void setDisplayName(String testNewDisplayName) {
+    }
+
+    private void signInTestuser(String testMail, String testPassword) {
+        mAuth.signInWithEmailAndPassword(testMail, testPassword)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInUserWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            Toast.makeText(getApplicationContext(), "User signed in.",
+                                    Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInUserWithEmail:failure", task.getException());
+                            Toast.makeText(getApplicationContext(), "User signIn failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        // ...
+                    }
+                });
+    }
+
+    private void testAuthStatus() {
+    }
+
+    private void deleteTestUser() {
+
+
+
+
+
+
+
+
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        AuthCredential credential = EmailAuthProvider
+                .getCredential(TEST_MAIL, TEST_PASSWORD);
+
+
+        user.reauthenticate(credential)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d(TAG, "User re-authenticated.");
+                    }
+                });
+
+        if (user == null) {
+            // ....
+
+
+
+            return;
+        }
+
+        user.delete()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            // ...
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            // ...
+
+                        }
+                    }
+                });
+    }
+
+    private void sendResetPasswordMail(String testMail) {
+        mAuth.sendPasswordResetEmail(testMail)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "We sent you a link to your e-mail account.",
+                                    Toast.LENGTH_LONG).show();
+                            Log.d(TAG, "Email sent.");
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Could not send mail. Correct e-mail?.",
+                                    Toast.LENGTH_LONG).show();
+
+                        }
+
+                    }
+                });
+    }
+
+    private void sendMailVerification() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(getApplicationContext(), "No user authentiated.",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        mAuth.getCurrentUser().sendEmailVerification();
+    }
+
+    private void signInWithGoogle() {
+
+    }
+
+    private void createTestUser(String testMail, String testPassword) {
+        mAuth.createUserWithEmailAndPassword(testMail, testPassword)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // ...
+                        } else {
+                            //...
+                        }
+
+                    }
+                });
+
+
+    }
+
 
 }
+
+
+/*
+
+   ---> keine Ahnung an welcher Stelle im Code das hier am meisten Sinn macht
+
+    AuthCredential credential = EmailAuthProvider.getCredential(email, password);
+
+        mUser.reauthenticate(credential)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+@Override
+public void onComplete(@NonNull Task<Void> task) {
+        if (task.isSuccessful()) {
+        Log.d(TAG, "User re-authenticated.");
+        deleteUserAccount();
+        } else
+        Log.d(TAG, "FAIL! User not re-authenticated.");
+        }
+        });*/
