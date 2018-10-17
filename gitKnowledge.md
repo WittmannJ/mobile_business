@@ -1,5 +1,5 @@
 # Git knowledge
 
-## Undo Changes before commit
+## Undo changes before commit
 git fetch --all
 git reset --hard origin/<branch-name>
