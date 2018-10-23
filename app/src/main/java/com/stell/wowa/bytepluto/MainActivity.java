@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "my first message!");
         setContentView(R.layout.activity_main);
         Toast.makeText(getApplicationContext(), R.string.dashboard_Text, Toast.LENGTH_LONG).show();
     }
