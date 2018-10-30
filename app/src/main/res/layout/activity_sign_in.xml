@@ -9,7 +9,7 @@
     android:padding="10dp">
 
     <EditText
-        android:id="@+id/editEmail"
+        android:id="@+id/signInEditEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="e-mail"
@@ -18,7 +18,7 @@
         />
 
     <EditText
-        android:id="@+id/editPassword"
+        android:id="@+id/signInEditPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="password"
@@ -26,20 +26,20 @@
         android:inputType="textPassword"/>
 
     <Button
-        android:id="@+id/sendBtn"
+        android:id="@+id/signInBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sign in"
         android:layout_marginTop="20dp"/>
 
     <Button
-        android:id="@+id/forgotPswdBtn"
+        android:id="@+id/signInForgotPswdBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Forgot Password"/>
 
     <TextView
-        android:id="@+id/needEmail"
+        android:id="@+id/signInNeedEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="none"
@@ -48,7 +48,7 @@
         android:textAlignment="center"/>
 
     <Button
-        android:id="@+id/createAccountBtn"
+        android:id="@+id/signInCreateAccountBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Create Account"
