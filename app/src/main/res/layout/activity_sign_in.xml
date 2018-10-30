@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SignInActivity">
-
+    tools:context=".SignInActivity"
+    android:padding="10dp">
 
     <EditText
         android:id="@+id/editEmail"
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:hint="e-mail"
         android:textAlignment="center"
-        android:inputType="textEmailAddress"
+        android:inputType="textWebEmailAddress"
         />
 
     <EditText
