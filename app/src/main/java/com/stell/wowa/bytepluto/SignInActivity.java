@@ -71,6 +71,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     private void doSignIn() {
         //TODO: Check if ok => (1) => MainActivity; else => (0) => SignInActivity mit FehlerToast
-        Log.d(TAG, "Sign in Button clicked!");
+        Log.d(TAG, "Sign in Button clicked! --- " + mEditTextEmail.getText().toString() + "; " + mEditTextPassword.getText().toString() );
     }
 }
