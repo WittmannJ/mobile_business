@@ -57,35 +57,44 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onReStart");
     }
 
+    /* Der Inflater lädt die Daten aus dem Menu (XML) und bläßt es in die View (Activity)
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
+        MenuInflater inflater = getMenuInflater(); //braucht man sich nicht merken, nur was das logisch macht
+        inflater.inflate(R.menu.main_menu, menu); // braucht man sich nicht merken, nur was das logisch macht
         return true;
     }
 
+    // Hier hinterlegt man die Logik für die jeweiligen MenuItems
+    // Die Referenz für das MenuItem kommt vom MenuInflater, dieser setzt die Referenz der MenuItems für unsere Methode
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         Intent intent;
         switch (item.getItemId()){
             case R.id.mainMenuPost:
                 Log.d(TAG, "Post was pressed");
+                Toast.makeText(getApplicationContext(), "Post", Toast.LENGTH_LONG).show();
                 return true;
 
             case R.id.mainMenuHelp:
                 Log.d(TAG, "Help was pressed");
+                Toast.makeText(getApplicationContext(), "Help", Toast.LENGTH_LONG).show();
                 return true;
 
             case R.id.mainMenuTest:
                 Log.d(TAG, "Test was pressed");
+                Toast.makeText(getApplicationContext(), "Test", Toast.LENGTH_LONG).show();
                 return true;
 
             case R.id.idWriteTime:
                 Log.d(TAG, "WriteTime was pressed");
+                Toast.makeText(getApplicationContext(), "WriteTime", Toast.LENGTH_LONG).show();
                 return true;
 
             case R.id.mainMenuManageAccount:
                 Log.d(TAG, "ManageAccount was pressed.");
+                Toast.makeText(getApplicationContext(), "Manage Account", Toast.LENGTH_LONG).show();
                 return true;
 
             default:
