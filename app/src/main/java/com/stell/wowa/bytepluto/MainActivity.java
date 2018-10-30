@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
 
         super.onStart();
-        Log.d("lifecycle","onStart invoked");
+        Log.d("lifecycle", "onStart invoked");
 
         if (currentUser == null) {
             Log.d(TAG, "User not authenticated! ");
@@ -63,12 +63,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d("lifecycle","onCreate invoked");
+        Log.d("lifecycle", "onCreate invoked");
         setContentView(R.layout.activity_main);
 
         Intent intent = getIntent();
         currentUser = intent.getStringExtra("message");
-        Toast.makeText(this, currentUser, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, currentUser, Toast.LENGTH_LONG).show();
 
         ArrayAdapter<Post> mAdapter = new ArrayAdapter<Post>(
                 this,
@@ -102,8 +102,6 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         int test = 1;
-
-
 
 
     }
@@ -170,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.sendResetPasswordMail:
-                sendResetPasswordMail(TEST_MAIL);
+                sendResetPasswordMail();
                 return true;
 
             case R.id.sendActivationMail:
@@ -188,20 +186,25 @@ public class MainActivity extends AppCompatActivity {
 
     private void signOutTestuser() {
 
-            FirebaseUser user = mAuth.getCurrentUser();
-            if (user == null) {
-                Toast.makeText(getApplicationContext(), "No user signed in.",
-                        Toast.LENGTH_SHORT).show();
-                return;
-            }
-            FirebaseAuth.getInstance().signOut();
-            Toast.makeText(MainActivity.this, "You are signed out.",
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(getApplicationContext(), "No user signed in.",
                     Toast.LENGTH_SHORT).show();
+            return;
+        }
+        FirebaseAuth.getInstance().signOut();
+
+
+        Toast.makeText(MainActivity.this, "You are signed out.",
+                Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(getApplication(),
+                SignInActivity.class);
+        startActivity(intent);
 
     }
 
     private void setDisplayName(String testNewDisplayName) {
-
 
 
     }
@@ -232,10 +235,9 @@ public class MainActivity extends AppCompatActivity {
     private void testAuthStatus() {
         FirebaseUser user = mAuth.getCurrentUser();
 
-        if(user != null && user.getEmail() != null){
+        if (user != null && user.getEmail() != null) {
             Toast.makeText(MainActivity.this, user.getEmail(), Toast.LENGTH_LONG).show();
-        } else
-        {
+        } else {
             Toast.makeText(MainActivity.this, "No User logged in", Toast.LENGTH_LONG).show();
 
         }
@@ -244,12 +246,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void deleteTestUser() {
-
-
-
-
-
-
 
 
         FirebaseUser user = mAuth.getCurrentUser();
@@ -268,7 +264,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (user == null) {
             // ....
-
 
 
             return;
@@ -291,23 +286,32 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void sendResetPasswordMail(String testMail) {
-        mAuth.sendPasswordResetEmail(testMail)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "We sent you a link to your e-mail account.",
-                                    Toast.LENGTH_LONG).show();
-                            Log.d(TAG, "Email sent.");
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Could not send mail. Correct e-mail?.",
-                                    Toast.LENGTH_LONG).show();
+    private void sendResetPasswordMail() {
 
-                        }
+        FirebaseUser user = mAuth.getCurrentUser();
 
-                    }
-                });
+        if (user != null) {
+            if (user.getEmail() != null) {
+                mAuth.sendPasswordResetEmail(user.getEmail())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(getApplicationContext(), "We sent you a link to your e-mail account.",
+                                            Toast.LENGTH_LONG).show();
+                                    Log.d(TAG, "Email sent.");
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Could not send mail. Correct e-mail?.",
+                                            Toast.LENGTH_LONG).show();
+
+                                }
+
+                            }
+                        });
+            }
+        }
+
+
     }
 
     private void sendMailVerification() {
@@ -345,27 +349,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("lifecycle","onResume invoked");
+        Log.d("lifecycle", "onResume invoked");
     }
+
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("lifecycle","onPause invoked");
+        Log.d("lifecycle", "onPause invoked");
     }
+
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("lifecycle","onStop invoked");
+        Log.d("lifecycle", "onStop invoked");
     }
+
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.d("lifecycle","onRestart invoked");
+        Log.d("lifecycle", "onRestart invoked");
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("lifecycle","onDestroy invoked");
+        Log.d("lifecycle", "onDestroy invoked");
     }
 
 

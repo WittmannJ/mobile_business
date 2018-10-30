@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="15dp"
@@ -14,8 +15,7 @@
         android:layout_marginTop="50dp"
         android:ems="10"
         android:hint="E-Mail (will not be public)"
-        android:inputType="textEmailAddress"
-        android:text="dietergreipl@gmail.com" />
+        android:inputType="textEmailAddress" />
 
     <EditText
         android:id="@+id/signInPassword"
@@ -24,8 +24,7 @@
         android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="Password"
-        android:inputType="textPassword"
-        android:text="123456" />
+        android:inputType="textPassword" />
 
     <Button
         android:id="@+id/signInButtonSignIn"
