@@ -230,6 +230,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void testAuthStatus() {
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if(user != null && user.getEmail() != null){
+            Toast.makeText(MainActivity.this, user.getEmail(), Toast.LENGTH_LONG).show();
+        } else
+        {
+            Toast.makeText(MainActivity.this, "No User logged in", Toast.LENGTH_LONG).show();
+
+        }
+
+
     }
 
     private void deleteTestUser() {
