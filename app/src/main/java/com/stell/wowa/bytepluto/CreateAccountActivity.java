@@ -58,18 +58,26 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         String mail = mEditTextEMail.getText().toString();
         String password = mEditTextPassword1.getText().toString();
 
-        mAuth.createUserWithEmailAndPassword(mail, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Create User successful!", Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Create User failed!", Toast.LENGTH_LONG).show();
-                        }
+        if (mail != null && !mail.equals("")) {
+            if (password != null && !password.equals("")) {
+                mAuth.createUserWithEmailAndPassword(mail, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(getApplicationContext(), "Create User successful!", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Create User failed!", Toast.LENGTH_LONG).show();
+                                }
 
-                    }
-                });
+                            }
+                        });
+            } else {
+                Toast.makeText(this, "enter a password!", Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Toast.makeText(this, "enter a email!", Toast.LENGTH_LONG).show();
+        }
 
 
     }

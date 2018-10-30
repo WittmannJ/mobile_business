@@ -12,7 +12,7 @@
         android:id="@+id/createAccountEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="dietergreipl@gmail.com"
+
         android:ems="10"
         android:hint="E-Mail (will not be public)"
         android:inputType="textEmailAddress" />
@@ -21,7 +21,7 @@
         android:id="@+id/createAccountPassword1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="123456"
+
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword" />

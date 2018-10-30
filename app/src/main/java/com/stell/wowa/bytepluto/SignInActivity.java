@@ -16,7 +16,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class SignInActivity extends AppCompatActivity implements View.OnClickListener{
+public class SignInActivity extends AppCompatActivity implements View.OnClickListener {
 
     EditText mEditTextEmail;
     EditText mEditTextPassword;
@@ -36,13 +36,11 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         mAuth = FirebaseAuth.getInstance();
 
 
-
         ((Button) findViewById(R.id.signInButtonSignIn)).setOnClickListener(this);
         ((Button) findViewById(R.id.signInButtonResetPassword)).setOnClickListener(this);
         ((Button) findViewById(R.id.signInButtonCreateAccount)).setOnClickListener(this);
 
 
-        
     }
 
     @Override
@@ -72,12 +70,40 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void doResetPassword() {
+
+
+            String email = mEditTextEmail.getText().toString();
+
+        if (email != null && !email.equals("") ) {
+
+            mAuth.sendPasswordResetEmail(email)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(), "We sent you a link to your e-mail account.",
+                                        Toast.LENGTH_LONG).show();
+                                Log.d(TAG, "Email sent.");
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Could not send mail. Correct e-mail?.",
+                                        Toast.LENGTH_LONG).show();
+
+                            }
+
+                        }
+                    });
+
+        } else {
+            Toast.makeText(SignInActivity.this, "please enter an email!", Toast.LENGTH_LONG).show();
+        }
+
     }
 
     private void doSignIn() {
-            String mail = mEditTextEmail.getText().toString();
-            String password = mEditTextPassword.getText().toString();
+        String mail = mEditTextEmail.getText().toString();
+        String password = mEditTextPassword.getText().toString();
 
+        if ((mail != null && !mail.equals("")) && (password != null && !password.equals(""))) {
             mAuth.signInWithEmailAndPassword(mail, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -101,8 +127,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                             // ...
                         }
                     });
-
-
+        } else {
+            Toast.makeText(SignInActivity.this, "pls enter something", Toast.LENGTH_LONG).show();
+        }
 
 
     }
