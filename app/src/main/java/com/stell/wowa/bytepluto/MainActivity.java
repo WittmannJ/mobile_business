@@ -25,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart");
+
+        //TODO: Diesen call noch abhängig von Anmeldestatus implementieren
+        Intent intent = new Intent(getApplication(), SignInActivity.class);
+        startActivity(intent);
     }
 
     @Override
