@@ -25,7 +25,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.stell.wowa.bytepluto.model.Post;
 import com.stell.wowa.bytepluto.test.PostTestData;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -99,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         mListView.setAdapter(mAdapter);
 
         mAuth = FirebaseAuth.getInstance();
+        int test = 1;
 
 
 
@@ -141,7 +141,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.createTestuser:
+                Toast.makeText(getApplicationContext(), "creating User...", Toast.LENGTH_LONG).show();
                 createTestUser(TEST_MAIL, TEST_PASSWORD);
+
                 return true;
 
             case R.id.deleteTestuser:
@@ -311,9 +313,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // ...
+                            Toast.makeText(getApplicationContext(), "Create User successful!", Toast.LENGTH_LONG).show();
                         } else {
-                            //...
+                            Toast.makeText(getApplicationContext(), "Create User failed!", Toast.LENGTH_LONG).show();
                         }
 
                     }
