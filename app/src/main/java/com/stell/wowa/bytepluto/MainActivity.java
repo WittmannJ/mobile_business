@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
 
         super.onStart();
+        Log.d("lifecycle","onStart invoked");
 
         if (currentUser == null) {
             Log.d(TAG, "User not authenticated! ");
@@ -61,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d("lifecycle","onCreate invoked");
         setContentView(R.layout.activity_main);
 
         Intent intent = getIntent();
@@ -198,6 +201,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setDisplayName(String testNewDisplayName) {
+
+
+
     }
 
     private void signInTestuser(String testMail, String testPassword) {
@@ -322,6 +328,33 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("lifecycle","onResume invoked");
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("lifecycle","onPause invoked");
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("lifecycle","onStop invoked");
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("lifecycle","onRestart invoked");
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("lifecycle","onDestroy invoked");
     }
 
 
