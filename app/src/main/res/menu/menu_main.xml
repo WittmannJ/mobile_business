@@ -15,54 +15,8 @@
         android:title="Manage Account"
         />
 
-
-    <item
-        android:id="@+id/mainMenuHelp"
-        android:title="@string/help"
-        />
-
-    <item
-        android:id="@+id/mainMenuTest"
-        android:title="Test"
-        />
-
-    <item
-        android:id="@+id/idWriteTime"
-        android:title="Write Time"
-        />
-    <item
-        android:id="@+id/createTestuser"
-        android:title="Create Testuser" />
-
-    <item
-        android:id="@+id/deleteTestuser"
-        android:title="Delete Testuser" />
-
-    <item
-        android:id="@+id/testAuthStatus"
-        android:title="Test Auth Status" />
-
-    <item
-        android:id="@+id/signInTestuser"
-        android:title="Sign in Testuser" />
-
-    <item
-        android:id="@+id/signOutTestuser"
-        android:title="Sign Out Testuser" />
-
-    <item
-        android:id="@+id/setDisplayName"
-        android:title="Set Display Name" />
-
-    <item
-        android:id="@+id/sendActivationMail"
-        android:title="Send activation mail." />
-
     <item
         android:id="@+id/sendResetPasswordMail"
         android:title="Send reset password mail." />
 
-    <item
-        android:id="@+id/idSignInWithGoogle"
-        android:title="Sign In with Google" />
 </menu>

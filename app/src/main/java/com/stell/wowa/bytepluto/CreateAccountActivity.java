@@ -1,5 +1,6 @@
 package com.stell.wowa.bytepluto;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -66,6 +67,9 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(getApplicationContext(), "Create User successful!", Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(getApplication(),
+                                            MainActivity.class);
+                                    startActivity(intent);
                                 } else {
                                     Toast.makeText(getApplicationContext(), "Create User failed!", Toast.LENGTH_LONG).show();
                                 }

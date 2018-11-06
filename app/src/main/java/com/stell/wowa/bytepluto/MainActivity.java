@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     ListView mListView;
 
     private static String TAG = "MainActivity";
-    private static String currentUser = null;
+    private static FirebaseUser currentUser;
 
     private FirebaseAuth mAuth;
 
@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
         super.onStart();
         Log.d("lifecycle", "onStart invoked");
+
+        currentUser = mAuth.getCurrentUser();
 
         if (currentUser == null) {
             Log.d(TAG, "User not authenticated! ");
@@ -67,8 +69,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Intent intent = getIntent();
-        currentUser = intent.getStringExtra("message");
-        //Toast.makeText(this, currentUser, Toast.LENGTH_LONG).show();
+
 
         ArrayAdapter<Post> mAdapter = new ArrayAdapter<Post>(
                 this,
@@ -101,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         mListView.setAdapter(mAdapter);
 
         mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
         int test = 1;
 
 
@@ -122,15 +124,6 @@ public class MainActivity extends AppCompatActivity {
 
                 intent = new Intent(getApplication(), PostActivity.class);
                 startActivity(intent);
-
-                return true;
-
-            case R.id.mainMenuHelp:
-                Log.d(TAG, "Help was pressed");
-                return true;
-
-            case R.id.mainMenuTest:
-                Log.d(TAG, "Test was pressed");
                 return true;
 
             case R.id.mainMenuManageAccount:
@@ -141,42 +134,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
 
-            case R.id.createTestuser:
-                Toast.makeText(getApplicationContext(), "creating User...", Toast.LENGTH_LONG).show();
-                createTestUser(TEST_MAIL, TEST_PASSWORD);
-
-                return true;
-
-            case R.id.deleteTestuser:
-                deleteTestUser();
-                return true;
-
-            case R.id.testAuthStatus:
-                testAuthStatus();
-                return true;
-
-            case R.id.signInTestuser:
-                signInTestuser(TEST_MAIL, TEST_PASSWORD);
-                return true;
-
-            case R.id.signOutTestuser:
-                signOutTestuser();
-                return true;
-
-            case R.id.setDisplayName:
-                setDisplayName(TEST_NEW_DISPLAY_NAME);
-                return true;
-
             case R.id.sendResetPasswordMail:
+                Log.d(TAG, "sendResetPaswordMail was pressed.");
                 sendResetPasswordMail();
-                return true;
-
-            case R.id.sendActivationMail:
-                sendMailVerification();
-                return true;
-
-            case R.id.idSignInWithGoogle:
-                signInWithGoogle();
                 return true;
 
             default:

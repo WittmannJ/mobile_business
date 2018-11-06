@@ -66,7 +66,7 @@
         android:id="@+id/manageAccountPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="123456"
+        android:text=""
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword" />

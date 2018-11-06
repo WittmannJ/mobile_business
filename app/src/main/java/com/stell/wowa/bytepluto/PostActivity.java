@@ -1,5 +1,6 @@
 package com.stell.wowa.bytepluto;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,8 +23,7 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
         ((Button) findViewById( R.id.postButtonPost)).setOnClickListener( this );
 
         //  TODO: Remove; test setting
-        mPostBody.setText("Lore ipsum se...");
-        mPostTitle.setText("Title");
+
     }
 
 
@@ -41,6 +41,8 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void doPost() {
-
+        Intent intent = new Intent(getApplication(),
+                MainActivity.class);
+        startActivity(intent);
     }
 }
