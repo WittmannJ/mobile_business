@@ -7,27 +7,16 @@
         android:id="@+id/mainMenuPost"
         android:icon="?android:attr/actionModeShareDrawable"
         android:title="Post"
-        app:showAsAction="always"
+
         />
 
     <item
         android:id="@+id/mainMenuManageAccount"
-        android:title="Post"
-        />
-
-
-    <item
-        android:id="@+id/mainMenuHelp"
-        android:title="@string/help"
+        android:title="Manage Account"
         />
 
     <item
-        android:id="@+id/mainMenuTest"
-        android:title="Test"
-        />
+        android:id="@+id/sendResetPasswordMail"
+        android:title="Send reset password mail." />
 
-    <item
-        android:id="@+id/idWriteTime"
-        android:title="Write Time"
-        />
 </menu>
