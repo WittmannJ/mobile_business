@@ -19,4 +19,7 @@
         android:id="@+id/sendResetPasswordMail"
         android:title="Send reset password mail." />
 
+    <item android:id="@+id/postTest"
+        android:title="PostTest"/>
+
 </menu>

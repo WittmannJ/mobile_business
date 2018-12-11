@@ -23,6 +23,7 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.stell.wowa.bytepluto.model.Post;
+import com.google.firebase.database.*;
 import com.stell.wowa.bytepluto.test.PostTestData;
 
 import java.util.List;
@@ -137,6 +138,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.sendResetPasswordMail:
                 Log.d(TAG, "sendResetPaswordMail was pressed.");
                 sendResetPasswordMail();
+                return true;
+
+            case R.id.postTest:
+                Log.d(TAG, "testPost.");
+                DatabaseReference dbf = FirebaseDatabase.getInstance().getReference("/Post/Test");
+                dbf.setValue(currentUser.getEmail());
                 return true;
 
             default:
@@ -270,8 +277,6 @@ public class MainActivity extends AppCompatActivity {
                         });
             }
         }
-
-
     }
 
     private void sendMailVerification() {

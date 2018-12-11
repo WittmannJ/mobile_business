@@ -60,6 +60,16 @@ public class ManageAccountActivity extends AppCompatActivity implements View.OnC
     }
 
     @Override
+    protected void onPostResume() {
+        super.onPostResume();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public void onClick(View view) {
         int i = view.getId();
         switch (i) {
@@ -85,6 +95,8 @@ public class ManageAccountActivity extends AppCompatActivity implements View.OnC
             return;
         }
         mAuth.getCurrentUser().sendEmailVerification();
+        Toast.makeText(getApplicationContext(), "Authentication Email has been send.",
+                Toast.LENGTH_SHORT).show();
     }
 
     private void doSignOut() {
