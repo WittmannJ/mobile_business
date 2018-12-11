@@ -103,6 +103,7 @@ public class ManageAccountActivity extends AppCompatActivity implements View.OnC
 
         Intent intent = new Intent(getApplication(),
                 SignInActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 
