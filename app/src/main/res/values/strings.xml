@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">BytePluto</string>
-    <string name="toastString">Das ist ein Toast</string>
-    <string name="help">Hilfe</string>
-    <string name="dashboardString">Hello!</string>
+    <string name="help">help</string>
+    <string name="textDeleteAccount">Delete Account</string>
 </resources>

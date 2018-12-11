@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "991934996661",
+    "firebase_url": "https://bytepluto.firebaseio.com",
+    "project_id": "bytepluto",
+    "storage_bucket": "bytepluto.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:991934996661:android:30c1c75ad02b1036",
+        "android_client_info": {
+          "package_name": "com.stell.wowa.bytepluto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "991934996661-ul10333qd70nkhvqfe20ou80nn67a07s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.stell.wowa.bytepluto",
+            "certificate_hash": "c1beeacb638744505d25f2fe9fc8194fab94980b"
+          }
+        },
+        {
+          "client_id": "991934996661-4g3mng4bcin2hpjgfr0hurtt7rosoked.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCY1nI8yovE4MfAke1Opw63ZU2j3qvsfTI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "991934996661-4g3mng4bcin2hpjgfr0hurtt7rosoked.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
