@@ -3,6 +3,7 @@ package com.stell.wowa.bytepluto;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -22,10 +23,18 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.stell.wowa.bytepluto.model.Post;
 import com.stell.wowa.bytepluto.test.PostTestData;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +50,36 @@ public class MainActivity extends AppCompatActivity {
     private static FirebaseUser currentUser;
 
     private FirebaseAuth mAuth;
+
+    private ChildEventListener mChildEventListener = new ChildEventListener() {
+        @Override
+        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            Log.d(TAG, "onChildAdded: " + dataSnapshot.getKey());
+        }
+
+        @Override
+        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            Log.d(TAG, "onChildChanged: " + dataSnapshot.getKey());
+        }
+
+        @Override
+        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            Log.d(TAG, "onChildRemoved: " + dataSnapshot.getKey());
+        }
+
+        @Override
+        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            Log.d(TAG, "onChildMoved: " + dataSnapshot.getKey());
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+            Log.d(TAG, "called onCancelled - Listener died ");
+        }
+    };
+
+    FirebaseDatabase mDatabase;
+    DatabaseReference myRef;
 
     @Override
     protected void onStart() {
@@ -103,7 +142,8 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-        int test = 1;
+
+        FirebaseDatabase.getInstance().getReference("Posts/").addChildEventListener(mChildEventListener);
 
 
     }
@@ -139,9 +179,30 @@ public class MainActivity extends AppCompatActivity {
                 sendResetPasswordMail();
                 return true;
 
+
+            case R.id.test_post:
+                Log.d(TAG, "send test post");
+                sendTestPost();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void sendTestPost(){
+
+        FirebaseUser mCurrentUser = mAuth.getCurrentUser();
+        Map<String, Object> postMap = new HashMap<>();
+        postMap.put("uid", mAuth.getCurrentUser().getUid());
+        postMap.put("author", mCurrentUser.getEmail());
+        postMap.put("title", "test-title");
+        postMap.put("body", "test-body");
+        postMap.put("timestamp", ServerValue.TIMESTAMP);
+
+        mDatabase = FirebaseDatabase.getInstance();
+        myRef = mDatabase.getReference("Posts/");
+        myRef.push().setValue(postMap);
     }
 
     private void signOutTestuser() {

@@ -69,6 +69,15 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         startActivity(intent);
     }
 
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            finish();
+        }
+    }
+
     private void doResetPassword() {
 
 
