@@ -80,11 +80,12 @@ public class ManageAccountActivity extends AppCompatActivity implements View.OnC
     private void doSendActivationMail() {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
-            Toast.makeText(getApplicationContext(), "No user authentiated.",
+            Toast.makeText(getApplicationContext(), "No user authenticated.",
                     Toast.LENGTH_SHORT).show();
             return;
         }
         mAuth.getCurrentUser().sendEmailVerification();
+        Toast.makeText(getApplicationContext(), "Authorization Email sent!", Toast.LENGTH_LONG).show();
     }
 
     private void doSignOut() {
@@ -102,6 +103,7 @@ public class ManageAccountActivity extends AppCompatActivity implements View.OnC
 
         Intent intent = new Intent(getApplication(),
                 SignInActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 

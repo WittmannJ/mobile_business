@@ -66,10 +66,13 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(getApplicationContext(), "Create User successful!", Toast.LENGTH_LONG).show();
+                                    mAuth.getCurrentUser().sendEmailVerification();
+                                    Toast.makeText(getApplicationContext(), "Create User successful and verification email has been sent!", Toast.LENGTH_LONG).show();
+
                                     Intent intent = new Intent(getApplication(),
                                             MainActivity.class);
                                     startActivity(intent);
+
                                 } else {
                                     Toast.makeText(getApplicationContext(), "Create User failed!", Toast.LENGTH_LONG).show();
                                 }
