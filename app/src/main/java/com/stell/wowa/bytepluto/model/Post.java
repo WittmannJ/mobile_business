@@ -6,6 +6,7 @@ public class Post {
     public String title;
     public String body;
     public long timestamp;
+    public String firebaseKey;
 
     public Post() {
     }

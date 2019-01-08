@@ -70,14 +70,8 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
         myRef = mDatabase.getReference("Posts/");
         myRef.push().setValue(postMap);
 
-
-
-
-
         Intent intent = new Intent(getApplication(),
                 MainActivity.class);
         startActivity(intent);
-
-
     }
 }
