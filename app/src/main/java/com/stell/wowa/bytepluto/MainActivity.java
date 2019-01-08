@@ -191,7 +191,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sendTestPost(){
-
         FirebaseUser mCurrentUser = mAuth.getCurrentUser();
         Map<String, Object> postMap = new HashMap<>();
         postMap.put("uid", mAuth.getCurrentUser().getUid());
