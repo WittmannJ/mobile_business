@@ -28,58 +28,89 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.stell.wowa.bytepluto.model.Post;
 import com.stell.wowa.bytepluto.test.PostTestData;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
+    private boolean mListenerIsRunning = false;
+    private ArrayAdapter<Post> mAdapter;
+
     private static final String TEST_USERNAME = "Hans Huber";
     private static final String TEST_MAIL = "hans.huber@gmail.com";
     private static final String TEST_PASSWORD = "123456";
     private static final String TEST_NEW_DISPLAY_NAME = "Sepp Maier";
 
-    List<Post> mPostList = PostTestData.createTestData();
+    List<Post> mPostList = new ArrayList<>();
     ListView mListView;
 
     private static String TAG = "MainActivity";
     private static FirebaseUser currentUser;
 
+    private Query mQuery;
+
     private FirebaseAuth mAuth;
-
-    private ChildEventListener mChildEventListener = new ChildEventListener() {
-        @Override
-        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            Log.d(TAG, "onChildAdded: " + dataSnapshot.getKey());
-        }
-
-        @Override
-        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            Log.d(TAG, "onChildChanged: " + dataSnapshot.getKey());
-        }
-
-        @Override
-        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-            Log.d(TAG, "onChildRemoved: " + dataSnapshot.getKey());
-        }
-
-        @Override
-        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            Log.d(TAG, "onChildMoved: " + dataSnapshot.getKey());
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-            Log.d(TAG, "called onCancelled - Listener died ");
-        }
-    };
-
     FirebaseDatabase mDatabase;
     DatabaseReference myRef;
+
+    private ChildEventListener getChildEventListener() {
+        ChildEventListener cel = new ChildEventListener() {
+
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                // Post ist ein Container für die Daten in Post.java werden die Daten umgewandelt
+                Post p = Post.fromSnapshot (dataSnapshot);
+                mPostList.add (p);
+                if (dataSnapshot.child("author").getValue().equals("test@test.de")){
+                   Log.d(TAG, "Jakob hat was gepostet" + dataSnapshot.getValue());
+                }
+                Toast.makeText(getApplicationContext(),"added: "+ dataSnapshot.getKey(), Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onChildAdded: " + dataSnapshot.getKey());
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d(TAG, "onChildChanged: " + dataSnapshot.getKey());
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                String snapshotKey = dataSnapshot.getKey();
+                for (int i = 0; i < mPostList.size(); i++){
+                    if(mPostList.get(i).firebaseKey.equals(snapshotKey)){
+                        mPostList.remove(i);
+                        Log.d(TAG, "deleted: "+ snapshotKey);
+                        break;
+                    }
+                }
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d(TAG, "onChildMoved: " + dataSnapshot.getKey());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d(TAG, "called onCancelled - Listener died ");
+            }
+        };
+        return cel;
+    }
+
+
+
 
     @Override
     protected void onStart() {
@@ -89,14 +120,25 @@ public class MainActivity extends AppCompatActivity {
 
         currentUser = mAuth.getCurrentUser();
 
+        // oder if (FirebaseAuth.getInstance().getCurrentUser() == null){}
         if (currentUser == null) {
+            mPostList.clear();
+            mAdapter.notifyDataSetChanged();
+
             Log.d(TAG, "User not authenticated! ");
             Intent intent = new Intent(getApplication(),
                     SignInActivity.class);
             startActivity(intent);
 
         } else {
-            Log.d(TAG, "User authenticated.");
+            if (!mListenerIsRunning) {
+                mPostList.clear();
+                mAdapter.notifyDataSetChanged();
+                //listener mit query verbinden -> auf aenderungen lauschen
+                mQuery.addChildEventListener(getChildEventListener());
+                Log.d(TAG, "User authenticated.");
+                mListenerIsRunning = true;
+            }
         }
     }
 
@@ -106,11 +148,11 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("lifecycle", "onCreate invoked");
         setContentView(R.layout.activity_main);
-
+        Log.d(TAG, "on Create:");
         Intent intent = getIntent();
 
 
-        ArrayAdapter<Post> mAdapter = new ArrayAdapter<Post>(
+        mAdapter = new ArrayAdapter<Post>(
                 this,
                 android.R.layout.simple_list_item_2,
                 android.R.id.text1,
@@ -143,8 +185,10 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 
-        FirebaseDatabase.getInstance().getReference("Posts/").addChildEventListener(mChildEventListener);
+        //FirebaseDatabase.getInstance().getReference("Posts/").addChildEventListener(mChildEventListener);
 
+        // query initialisieren
+        mQuery = FirebaseDatabase.getInstance().getReference().child("Posts/").limitToLast(50);
 
     }
 
