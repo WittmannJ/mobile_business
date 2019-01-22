@@ -28,55 +28,95 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.stell.wowa.bytepluto.model.Post;
-import com.stell.wowa.bytepluto.test.PostTestData;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
+    ArrayAdapter<Post> mAdapter;
+
     private static final String TEST_USERNAME = "Hans Huber";
     private static final String TEST_MAIL = "hans.huber@gmail.com";
     private static final String TEST_PASSWORD = "123456";
     private static final String TEST_NEW_DISPLAY_NAME = "Sepp Maier";
 
-    List<Post> mPostList = PostTestData.createTestData();
+    List<Post> mPostList = new ArrayList<>();
     ListView mListView;
+
+    private Query mQuery;
+
+    private static ChildEventListener mChildEventListener;
+
 
     private static String TAG = "MainActivity";
     private static FirebaseUser currentUser;
 
     private FirebaseAuth mAuth;
 
-    private ChildEventListener mChildEventListener = new ChildEventListener() {
-        @Override
-        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            Log.d(TAG, "onChildAdded: " + dataSnapshot.getKey());
-        }
+    private boolean mListenerIsRunning = false;
 
-        @Override
-        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            Log.d(TAG, "onChildChanged: " + dataSnapshot.getKey());
-        }
+    public ChildEventListener getChildEventListener() {
+        ChildEventListener mChildEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-        @Override
-        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-            Log.d(TAG, "onChildRemoved: " + dataSnapshot.getKey());
-        }
+                Post p = Post.fromSnapshot ( dataSnapshot);
+                mPostList.add(p);
 
-        @Override
-        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            Log.d(TAG, "onChildMoved: " + dataSnapshot.getKey());
-        }
+                mAdapter.notifyDataSetChanged();
 
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-            Log.d(TAG, "called onCancelled - Listener died ");
-        }
-    };
+
+                Toast.makeText(getApplicationContext(), "added : " + dataSnapshot.getKey().toString(), Toast.LENGTH_LONG).show();
+                Log.d(TAG, "onChildAdded: " + dataSnapshot.getKey());
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d(TAG, "onChildChanged: " + dataSnapshot.getKey());
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onChildRemoved: " + dataSnapshot.getKey());
+
+
+                String snapshotKey = dataSnapshot.getKey();
+
+                for (int i = 0; i < mPostList.size(); i++){
+                    if (mPostList.get(i).firebaseKey.equals(snapshotKey)){
+
+                        mPostList.remove ( i );
+                        Log.d(TAG, "Deleted : " + snapshotKey);
+                        break;
+                    }
+                }
+
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d(TAG, "onChildMoved: " + dataSnapshot.getKey());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d(TAG, "called onCancelled - Listener died ");
+            }
+        };
+
+        return mChildEventListener;
+    }
+
+
+
+
 
     FirebaseDatabase mDatabase;
     DatabaseReference myRef;
@@ -90,6 +130,12 @@ public class MainActivity extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
 
         if (currentUser == null) {
+
+
+            // Posts löschen
+            mPostList.clear();
+            mAdapter.notifyDataSetChanged();
+
             Log.d(TAG, "User not authenticated! ");
             Intent intent = new Intent(getApplication(),
                     SignInActivity.class);
@@ -97,6 +143,17 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
             Log.d(TAG, "User authenticated.");
+            if(!mListenerIsRunning){
+                mPostList.clear();
+                mAdapter.notifyDataSetChanged();
+                mQuery.addChildEventListener(getChildEventListener());
+                mListenerIsRunning = true;
+            }
+            else {
+                Log.d(TAG, "there is already an active listener");
+            }
+
+
         }
     }
 
@@ -110,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
 
-        ArrayAdapter<Post> mAdapter = new ArrayAdapter<Post>(
+        mAdapter = new ArrayAdapter<Post>(
                 this,
                 android.R.layout.simple_list_item_2,
                 android.R.id.text1,
@@ -143,7 +200,13 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 
-        FirebaseDatabase.getInstance().getReference("Posts/").addChildEventListener(mChildEventListener);
+
+        // Query initialisieren -> von bestimmter lokation (=Posts/) daten abfragen
+        mQuery = FirebaseDatabase.getInstance().getReference().child("Posts/")/*.limitToLast(5)*/;
+
+//        FirebaseDatabase.getInstance().getReference("Posts/").addChildEventListener(getChildEventListener());
+
+        // listener mit query verbinden -> auf änderungen "lauschen"
 
 
     }
