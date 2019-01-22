@@ -133,8 +133,10 @@ public class MainActivity extends AppCompatActivity {
 
 
             // Posts löschen
-            mPostList.clear();
-            mAdapter.notifyDataSetChanged();
+            /*mPostList.clear();
+            mAdapter.notifyDataSetChanged();*/
+
+            resetApp();
 
             Log.d(TAG, "User not authenticated! ");
             Intent intent = new Intent(getApplication(),
@@ -458,6 +460,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.d("lifecycle", "onDestroy invoked");
+    }
+
+    void resetApp(){
+
+        if (mListenerIsRunning){
+
+            mQuery.removeEventListener( mChildEventListener );
+            mListenerIsRunning = false;
+
+        }
+
+        mPostList.clear();
+        mAdapter.notifyDataSetChanged();
     }
 
 
