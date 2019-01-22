@@ -21,5 +21,8 @@
     <item
         android:id="@+id/test_post"
         android:title="test post" />
+    <item
+        android:title="Simulate Crash"
+        android:id="@+id/menu_mainCrash"/>
 
 </menu>

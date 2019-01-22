@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private static FirebaseUser currentUser;
 
     private FirebaseAuth mAuth;
+    private FirebaseDatabase mDatabase;
 
     private boolean mListenerIsRunning = false;
 
@@ -118,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    FirebaseDatabase mDatabase;
+
     DatabaseReference myRef;
 
     @Override
@@ -204,6 +206,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Query initialisieren -> von bestimmter lokation (=Posts/) daten abfragen
+
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         mQuery = FirebaseDatabase.getInstance().getReference().child("Posts/")/*.limitToLast(5)*/;
 
 //        FirebaseDatabase.getInstance().getReference("Posts/").addChildEventListener(getChildEventListener());
@@ -249,6 +253,10 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "send test post");
                 sendTestPost();
                 return true;
+
+            case R.id.menu_mainCrash:
+                Log.d(TAG, "mainCrash initiated");
+                Crashlytics.getInstance().crash(); // Force a crash
 
             default:
                 return super.onOptionsItemSelected(item);
