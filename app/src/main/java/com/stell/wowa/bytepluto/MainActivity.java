@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -25,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
+
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -110,8 +112,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
     @Override
     protected void onStart() {
 
@@ -151,6 +151,8 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "on Create:");
         Intent intent = getIntent();
 
+        // enable offline mode, damit Aktionen durchgefuehrt werden koennen ohne internet verbindung
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         mAdapter = new ArrayAdapter<Post>(
                 this,
@@ -169,7 +171,6 @@ public class MainActivity extends AppCompatActivity {
 
 
                 // Latest posts first...
-
                 Post post = getItem(getCount() - position - 1);
 
                 text1.setText(post.author);
@@ -227,6 +228,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.test_post:
                 Log.d(TAG, "send test post");
                 sendTestPost();
+                return true;
+            case R.id.menu_mainCrash:
+                Crashlytics.getInstance().crash();
                 return true;
 
             default:

@@ -28,6 +28,7 @@ public class Post {
         p.title = (String) dataSnapshot.child("title").getValue();
         p.body = (String) dataSnapshot.child("body").getValue();
         p.timestamp = (long) dataSnapshot.child("timestamp").getValue();
+        p.title = dataSnapshot.child("title").getValue().toString();
 
         p.firebaseKey = dataSnapshot.getKey();
         return p;

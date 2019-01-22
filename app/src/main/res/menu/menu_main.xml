@@ -7,16 +7,18 @@
         android:id="@+id/mainMenuManageAccount"
         android:title="Manage Account"
         />
-
     <item
         android:id="@+id/sendResetPasswordMail"
-        android:title="Send reset password mail." />
+        android:title="Send reset password mail."/>
     <item
         android:id="@+id/mainMenuPost"
         android:icon="?android:attr/actionModeShareDrawable"
-        android:title="Post"
-        />
+        android:title="Post"/>
+
     <item
         android:id="@+id/test_post"
-        android:title="test post" />
+        android:title="test post"/>
+    <item
+        android:id="@+id/menu_mainCrash"
+        android:title="simulate_crash" />
 </menu>
